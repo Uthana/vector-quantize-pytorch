@@ -1249,9 +1249,13 @@ class VectorQuantize(Module):
             # eval() mode does not need commitment loss.
             # For computational efficiency, it does not compute it.
             # MotionGPT uses it, though, so we add it for comparisons.
-            assert commit_loss.item() == 0, commit_loss
-            assert loss.item() == 0, loss
-            loss = commit_loss = F.mse_loss(quantize, x)
+            if x.shape == quantize.shape:
+                # but if we have dim != codebook_dim, that will not work
+                assert commit_loss.item() == 0, commit_loss
+                assert loss.item() == 0, loss
+                loss = commit_loss = F.mse_loss(quantize, x)
+            else:
+                print("VectorQuantize:  no loss calc, x and quantize shape differ: ", x.shape, quantize.shape)
 
         if not return_loss_breakdown:
             return quantize, embed_ind, loss
