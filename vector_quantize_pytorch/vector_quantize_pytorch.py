@@ -1254,8 +1254,9 @@ class VectorQuantize(Module):
                 assert commit_loss.item() == 0, commit_loss
                 assert loss.item() == 0, loss
                 loss = commit_loss = F.mse_loss(quantize, x)
-            else:
-                print("VectorQuantize:  no loss calc, x and quantize shape differ: ", x.shape, quantize.shape)
+            # else:
+            #     # TODO implement logger.debug() for following
+            #     print("VectorQuantize:  no loss calc, x and quantize shape differ: ", x.shape, quantize.shape)
 
         if not return_loss_breakdown:
             return quantize, embed_ind, loss
