@@ -76,19 +76,6 @@ def lens_to_mask(lens, max_length):
     seq = torch.arange(max_length, device = lens.device)
     return seq < lens[:, None]
 
-def efficient_rotation_trick_transform(u, q, e):
-    """
-    4.2 in https://arxiv.org/abs/2410.06424
-    """
-    e = rearrange(e, 'b d -> b 1 d')
-    w = l2norm(u + q, dim = 1).detach()
-
-    return (
-        e -
-        2 * (e @ rearrange(w, 'b d -> b d 1') @ rearrange(w, 'b d -> b 1 d')) +
-        2 * (e @ rearrange(u, 'b d -> b d 1').detach() @ rearrange(q, 'b d -> b 1 d').detach())
-    )
-
 def uniform_init(*shape):
     t = torch.empty(shape)
     nn.init.kaiming_uniform_(t)
