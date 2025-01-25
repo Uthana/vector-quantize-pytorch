@@ -846,7 +846,7 @@ class VectorQuantize(Module):
         affine_param_batch_decay = 0.99,
         affine_param_codebook_decay = 0.9,
         sync_update_v = 0., # the v that controls optimistic vs pessimistic update for synchronous update rule (21) https://minyoungg.github.io/vqtorch/assets/draft_050523.pdf
-        return_zeros_for_masked_padding = True,
+        return_zeros_for_masked_padding = True
     ):
         super().__init__()
         self.dim = dim
